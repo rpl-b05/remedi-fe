@@ -22,8 +22,10 @@ export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
     setLoading(true)
     await getAllRecords
       .then((res) => {
-        const tempRecords = res.data.medicalRecords.map((rec: any) => rec as Record)
-        tempRecords.sort((a: Record, b: Record) => (b.id - a.id))
+        const tempRecords = res.data.medicalRecords.map(
+          (rec: any) => rec as Record
+        )
+        tempRecords.sort((a: Record, b: Record) => b.id - a.id)
         setRecords(tempRecords)
       })
       .catch((err) => {

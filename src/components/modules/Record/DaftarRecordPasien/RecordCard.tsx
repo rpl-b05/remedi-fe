@@ -51,7 +51,8 @@ export const RecordCard: React.FC<Record> = ({
             {resepObat.map((item, index) => (
               <ListItem key={index}>
                 <Text fontSize="small" color="gray">
-                  Obat {item.obat}{` (${item.kategoriObatName})`}: {item.dosis}
+                  Obat {item.obat}
+                  {` (${item.kategoriObatName})`}: {item.dosis}
                 </Text>
               </ListItem>
             ))}
@@ -112,8 +113,9 @@ export const RecordCard: React.FC<Record> = ({
       </Flex>
 
       <Text fontSize="small" color="gray">
-        Record dibuat oleh dokter <span className="font-bold">{dokterEmail}</span>{' '}
-        pada <span className="font-bold">{formattedDateTime(createdAt)}</span>
+        Record dibuat oleh dokter{' '}
+        <span className="font-bold">{dokterEmail}</span> pada{' '}
+        <span className="font-bold">{formattedDateTime(createdAt)}</span>
       </Text>
       {displayPenyakit()}
       {displayDescription()}
