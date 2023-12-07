@@ -1,4 +1,4 @@
-import { useAuth, useUser } from '@hooks'
+import { useAuth } from '@hooks'
 
 export default function Hello() {
   const { user } = useAuth()

@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthContext } from '@contexts'
-import { User, useAuth, useUser } from '@hooks'
+import { User } from '@hooks'
 import { Toaster } from 'react-hot-toast'
 import { useState } from 'react'
 
@@ -14,7 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <AuthContext.Provider value={{ user, setUser }}>
         <Toaster />
-        <Component {...pageProps} />
+        <div className="bg-neutral-20">
+          <Component {...pageProps} />
+        </div>
       </AuthContext.Provider>
     </ChakraProvider>
   )
