@@ -26,7 +26,8 @@
     "next-stride": "^2.6.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@tsconfig/next": "^2.0.1",

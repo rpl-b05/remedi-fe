@@ -22,10 +22,8 @@ export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
     setLoading(true)
     await getAllRecords
       .then((res) => {
-        const tempRecords = []
-        for (const rec of res.data.medicalRecords) {
-          tempRecords.push(rec as Record)
-        }
+        const tempRecords = res.data.medicalRecords.map((rec: any) => rec as Record)
+        tempRecords.sort((a: Record, b: Record) => (b.id - a.id))
         setRecords(tempRecords)
       })
       .catch((err) => {
@@ -60,13 +58,13 @@ export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
             <RecordCard
               key={record.id}
               id={record.id}
-              dokterId={record.dokterId}
+              dokterEmail={record.dokterEmail}
               pasienId={record.pasienId}
               isVerified={record.isVerified}
               description={record.description}
-              penyakitId={record.penyakitId}
+              penyakit={record.penyakit}
               createdAt={record.createdAt}
-              recordObat={record.recordObat}
+              resepObat={record.resepObat}
             />
           ))}
         </>

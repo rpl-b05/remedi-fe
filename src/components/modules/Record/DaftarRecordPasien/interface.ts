@@ -4,17 +4,17 @@ export interface PasienEmailProps {
 
 export interface Record {
   id: number
-  dokterId: number
+  dokterEmail: string
   pasienId: number
   isVerified: boolean | null
   description: string | null
-  penyakitId: number | null
+  penyakit: string | null
   createdAt: string
-  recordObat: RecordObat[]
+  resepObat: RecordObat[]
 }
 
 export interface RecordObat {
   dosis: string
-  obatId: number
-  recordId: number
+  obat: string
+  kategoriObatName: string
 }

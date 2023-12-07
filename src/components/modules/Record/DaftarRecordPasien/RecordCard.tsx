@@ -12,15 +12,23 @@ import { useRouter } from 'next/navigation'
 
 export const RecordCard: React.FC<Record> = ({
   id,
-  dokterId,
+  dokterEmail,
   pasienId,
   isVerified,
   description,
-  penyakitId,
+  penyakit,
   createdAt,
-  recordObat,
+  resepObat,
 }) => {
   const router = useRouter()
+
+  const formattedDateTime = (datetime: string) => {
+    const originalDate = new Date(datetime)
+    const gmtPlus7Offset = 7 * 60
+    const localDate = new Date(originalDate.getTime() + gmtPlus7Offset)
+
+    return localDate.toLocaleString('en-GB')
+  }
 
   const displayVerifiedBadge = () => {
     if (isVerified) {
@@ -33,17 +41,17 @@ export const RecordCard: React.FC<Record> = ({
   }
 
   const displayDaftarResep = () => {
-    if (recordObat.length != 0) {
+    if (resepObat.length != 0) {
       return (
         <div>
           <Text fontSize="small" color="gray">
             Resep:
           </Text>
           <UnorderedList fontSize="small" color="gray">
-            {recordObat.map((item, index) => (
+            {resepObat.map((item, index) => (
               <ListItem key={index}>
                 <Text fontSize="small" color="gray">
-                  Obat {item.obatId}: {item.dosis}
+                  Obat {item.obat}{` (${item.kategoriObatName})`}: {item.dosis}
                 </Text>
               </ListItem>
             ))}
@@ -64,10 +72,10 @@ export const RecordCard: React.FC<Record> = ({
   }
 
   const displayPenyakit = () => {
-    if (penyakitId) {
+    if (penyakit) {
       return (
         <Text fontSize="small" color="gray">
-          Diagnosa: {penyakitId}
+          Diagnosa: {penyakit}
         </Text>
       )
     }
@@ -78,7 +86,7 @@ export const RecordCard: React.FC<Record> = ({
   }
 
   const displayEditButton = () => {
-    if (isVerified && penyakitId == null) {
+    if (isVerified && penyakit == null) {
       return (
         <Button size="xs" onClick={handleOnClick}>
           Tambahkan Detail
@@ -104,8 +112,8 @@ export const RecordCard: React.FC<Record> = ({
       </Flex>
 
       <Text fontSize="small" color="gray">
-        Record dibuat oleh dokter <span className="font-bold">{dokterId}</span>{' '}
-        pada <span className="font-bold">{createdAt}</span>
+        Record dibuat oleh dokter <span className="font-bold">{dokterEmail}</span>{' '}
+        pada <span className="font-bold">{formattedDateTime(createdAt)}</span>
       </Text>
       {displayPenyakit()}
       {displayDescription()}

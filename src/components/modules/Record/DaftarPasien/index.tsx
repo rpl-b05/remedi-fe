@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Box,
   Button,
@@ -26,6 +24,7 @@ import axios from 'axios'
 import React from 'react'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useDebounce } from 'use-debounce'
 
 export const ListDaftarPasien = () => {
   const [currQuery, setCurrQuery] = useState('')
@@ -35,6 +34,7 @@ export const ListDaftarPasien = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [email, setEmail] = useState('')
   const router = useRouter()
+  const [debouncedQuery] = useDebounce(currQuery, 500)
 
   const handleFormSubmit = async (e: any) => {
     e.preventDefault()
@@ -49,13 +49,19 @@ export const ListDaftarPasien = () => {
       })
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      const postData = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/record`, data, {
-        headers,
-      })
-      
+      const postData = axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/record`,
+        data,
+        {
+          headers,
+        }
+      )
+
       toast.promise(postData, {
         loading: 'Creating new medical record...',
-        success: 'Successfully created new medical record',
+        success: (data) => {
+          return `Successfully created new medical record with ID ${data.data.record.id}`
+        },
         error: (err) => err.response.data.responseMessage,
       })
 
@@ -91,7 +97,7 @@ export const ListDaftarPasien = () => {
     if (token) {
       fetchAllUsers()
     }
-  }, [currQuery])
+  }, [debouncedQuery])
 
   const showContent = () => {
     if (loading) {

@@ -93,6 +93,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
     }
     if (!penyakitId) {
       toast.error('Penyakit tidak boleh kosong')
+      return
     }
     e.preventDefault()
     const headers = {
@@ -117,8 +118,9 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
     })
 
     await postData
-      .then((_) => {
-        router.push(`/record/pasien`)
+      .then((res) => {
+        const email = res.data.data.pasien.email
+        router.push(`/record?email=${email}`)
       })
       .catch((err) => {
         console.log(err)
