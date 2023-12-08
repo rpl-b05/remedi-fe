@@ -1,17 +1,22 @@
-import Cookies from 'js-cookie'
 import { PasienEmailProps, Record } from './interface'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Center, Spinner, Text } from '@chakra-ui/react'
 import { RecordCard } from './RecordCard'
+import { useAuth, useLocalStorage } from '@hooks'
+import { useRouter } from 'next/navigation'
 
 export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
   email,
 }) => {
-  const token = Cookies.get('token')
   const [loading, setLoading] = useState(true)
   const currEmail = email
   const [records, setRecords] = useState<Record[]>([])
+  const [token, setToken] = useState<string>()
+  const { getItem } = useLocalStorage()
+  const { user } = useAuth()
+  const router = useRouter()
+  const [emailDokter, setEmailDokter] = useState('')
 
   const fetchAllRecords = async () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -35,10 +40,28 @@ export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
   }
 
   useEffect(() => {
-    if (token && currEmail != null) {
+    if (user) {
+      if (user.role == 'DOCTOR') {
+        setToken(user.token)
+        setEmailDokter(user.email)
+      } else {
+        router.push('/')
+      }
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (token && currEmail != null && emailDokter != '') {
       fetchAllRecords()
     }
-  }, [currEmail])
+  }, [currEmail, token, emailDokter])
+
+  useEffect(() => {
+    const tokenFromStorage = getItem('user')
+    if (!tokenFromStorage) {
+      router.push('/')
+    }
+  }, [])
 
   const showContent = () => {
     if (loading) {
@@ -67,6 +90,7 @@ export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
               penyakit={record.penyakit}
               createdAt={record.createdAt}
               resepObat={record.resepObat}
+              currentEmail={emailDokter}
             />
           ))}
         </>
