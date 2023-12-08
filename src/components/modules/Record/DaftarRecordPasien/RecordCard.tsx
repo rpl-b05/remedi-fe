@@ -2,15 +2,22 @@ import {
   Badge,
   Box,
   Button,
+  ButtonGroup,
   Flex,
   ListItem,
   Text,
   UnorderedList,
 } from '@chakra-ui/react'
 import { Record } from './interface'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { api } from 'src/components/utils/api'
+import toast from 'react-hot-toast'
 
-export const RecordCard: React.FC<Record> = ({
+interface RecordCardProps extends Record {
+  isPatientCard?: boolean
+}
+
+export const RecordCard: React.FC<RecordCardProps> = ({
   id,
   dokterEmail,
   pasienId,
@@ -19,7 +26,8 @@ export const RecordCard: React.FC<Record> = ({
   penyakit,
   createdAt,
   resepObat,
-}) => {
+  isPatientCard
+} : RecordCardProps) => {
   const router = useRouter()
 
   const formattedDateTime = (datetime: string) => {
@@ -96,6 +104,16 @@ export const RecordCard: React.FC<Record> = ({
     }
   }
 
+  const onVerifyClick = (isVerified: boolean) => {
+    try {
+      api.patch(`/record/${id}`, {isVerified})
+      toast.success(`Medical record berhasil di${isVerified? 'verifikasi':'tolak'}`)
+      router.reload()
+    } catch (err) {
+      toast.error(`Medical record gagal di${isVerified? 'verifikasi':'tolak'}`)
+    }
+  }  
+
   return (
     <Box
       borderWidth="1px"
@@ -113,14 +131,24 @@ export const RecordCard: React.FC<Record> = ({
       </Flex>
 
       <Text fontSize="small" color="gray">
-        Record dibuat oleh dokter{' '}
+        Record dibuat oleh Dokter{' '}
         <span className="font-bold">{dokterEmail}</span> pada{' '}
         <span className="font-bold">{formattedDateTime(createdAt)}</span>
       </Text>
       {displayPenyakit()}
       {displayDescription()}
       {displayDaftarResep()}
-      {displayEditButton()}
+      {!isPatientCard && displayEditButton()}
+      {
+        isPatientCard && isVerified==null &&(
+          <Box w="full" display="flex" justifyContent="flex-end" mt={4}>
+            <ButtonGroup>
+              <Button size="sm" colorScheme="green" onClick={() => onVerifyClick(true)}>Verifikasi</Button>
+              <Button size="sm" colorScheme="red" onClick={() => onVerifyClick(false)}>Tolak</Button>
+            </ButtonGroup>
+          </Box>
+        )
+      }
     </Box>
   )
 }
