@@ -10,9 +10,9 @@ export const useAuth = () => {
   const { getItem, setItem } = useLocalStorage()
 
   useEffect(() => {
-    const user = getItem('user')
-    if (user) {
-      addUser(JSON.parse(user))
+    const userLS = getItem('user')
+    if (userLS) {
+      addUser(JSON.parse(userLS))
     }
   }, [])
 
