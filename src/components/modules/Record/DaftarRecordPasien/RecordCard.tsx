@@ -19,6 +19,7 @@ export const RecordCard: React.FC<Record> = ({
   penyakit,
   createdAt,
   resepObat,
+  currentEmail,
 }) => {
   const router = useRouter()
 
@@ -51,8 +52,9 @@ export const RecordCard: React.FC<Record> = ({
             {resepObat.map((item, index) => (
               <ListItem key={index}>
                 <Text fontSize="small" color="gray">
-                  Obat {item.obat}
-                  {` (${item.kategoriObatName})`}: {item.dosis}
+                  Obat <span className="font-bold">{item.obat}</span>
+                  {` (${item.kategoriObatName})`}:{' '}
+                  <span className="font-bold">{item.dosis}</span>
                 </Text>
               </ListItem>
             ))}
@@ -66,7 +68,7 @@ export const RecordCard: React.FC<Record> = ({
     if (description) {
       return (
         <Text fontSize="small" color="gray">
-          Deskripsi: {description}
+          Deskripsi: <span className="font-bold">{description}</span>
         </Text>
       )
     }
@@ -76,7 +78,7 @@ export const RecordCard: React.FC<Record> = ({
     if (penyakit) {
       return (
         <Text fontSize="small" color="gray">
-          Diagnosa: {penyakit}
+          Diagnosa: <span className="font-bold">{penyakit}</span>
         </Text>
       )
     }
@@ -87,7 +89,7 @@ export const RecordCard: React.FC<Record> = ({
   }
 
   const displayEditButton = () => {
-    if (isVerified && penyakit == null) {
+    if (isVerified && penyakit == null && currentEmail == dokterEmail) {
       return (
         <Button size="xs" onClick={handleOnClick}>
           Tambahkan Detail
@@ -104,6 +106,10 @@ export const RecordCard: React.FC<Record> = ({
       paddingX={5}
       paddingY={3}
       marginTop={3}
+      _hover={{
+        transform: 'scale(1.01)',
+        transition: 'transform 0.3s ease-in-out',
+      }}
     >
       <Flex alignItems="center">
         <Text className="mr-5">

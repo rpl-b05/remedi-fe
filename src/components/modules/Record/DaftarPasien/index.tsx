@@ -19,22 +19,24 @@ import {
 } from '@chakra-ui/react'
 import { PasienCard } from './PasienCard'
 import { useEffect, useState } from 'react'
-import Cookies from 'js-cookie'
 import axios from 'axios'
 import React from 'react'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { useDebounce } from 'use-debounce'
+import { useAuth, useLocalStorage } from '@hooks'
 
 export const ListDaftarPasien = () => {
   const [currQuery, setCurrQuery] = useState('')
-  const token = Cookies.get('token')
   const [emails, setEmails] = useState<[string]>([''])
   const [loading, setLoading] = useState(true)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [email, setEmail] = useState('')
   const router = useRouter()
   const [debouncedQuery] = useDebounce(currQuery, 500)
+  const { user } = useAuth()
+  const [token, setToken] = useState<string>()
+  const { getItem } = useLocalStorage()
 
   const handleFormSubmit = async (e: any) => {
     e.preventDefault()
@@ -93,11 +95,41 @@ export const ListDaftarPasien = () => {
     setLoading(false)
   }
 
+  // jika ada perubahan pada user, atau dlm hal ini user sudah berhasil diketahui
+  // jika user dokter, maka set token untuk dipakai saat send request
+  // jika user pasien, maka dia unauthorized, back to landing page
+  useEffect(() => {
+    if (user) {
+      if (user.role == 'DOCTOR') {
+        setToken(user.token)
+      } else {
+        router.push('/')
+      }
+    }
+  }, [user])
+
+  // jika ada perubahan pada token, atau dlm hal ini token sudah didapatkan dari hook sebelumnya
+  // maka fetch all user utk ditampilkan
+  useEffect(() => {
+    if (token) {
+      fetchAllUsers()
+    }
+  }, [token])
+
+  // untuk update query setelah diupdate di field
   useEffect(() => {
     if (token) {
       fetchAllUsers()
     }
   }, [debouncedQuery])
+
+  // untuk redirect user unauthorized ke landing page
+  useEffect(() => {
+    const tokenFromStorage = getItem('user')
+    if (!tokenFromStorage) {
+      router.push('/')
+    }
+  }, [])
 
   const showContent = () => {
     if (loading) {
