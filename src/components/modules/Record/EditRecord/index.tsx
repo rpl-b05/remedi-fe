@@ -15,13 +15,12 @@ import {
 import { EditRecordProps, Obat, ObatPair, Penyakit } from './interface'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useAuth, useLocalStorage } from '@hooks'
 
 export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
   const [penyakitId, setPenyakitId] = useState<string>()
-  const token = Cookies.get('token')
   const [loadingPenyakit, setLoadingPenyakit] = useState(true)
   const [allPenyakit, setAllPenyakit] = useState<Penyakit[]>([])
   const [deskripsi, setDeskripsi] = useState<string>('')
@@ -29,6 +28,9 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
   const [loadingObat, setLoadingObat] = useState(true)
   const [obatPairs, setObatPairs] = useState<ObatPair[]>([])
   const router = useRouter()
+  const { user } = useAuth()
+  const [token, setToken] = useState<string>()
+  const { getItem } = useLocalStorage()
 
   const handleAddPair = () => {
     setObatPairs([...obatPairs, { obatId: undefined, dosis: '' }])
@@ -147,8 +149,27 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
   }
 
   useEffect(() => {
-    fetchAllPenyakit()
-    fetchAllObat()
+    if (user) {
+      if (user.role == 'DOCTOR') {
+        setToken(user.token)
+      } else {
+        router.push('/')
+      }
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (token) {
+      fetchAllPenyakit()
+      fetchAllObat()
+    }
+  }, [token])
+
+  useEffect(() => {
+    const tokenFromStorage = getItem('user')
+    if (!tokenFromStorage) {
+      router.push('/')
+    }
   }, [])
 
   const displayForm = () => {

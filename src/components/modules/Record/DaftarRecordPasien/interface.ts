@@ -11,6 +11,7 @@ export interface Record {
   penyakit: string | null
   createdAt: string
   resepObat: RecordObat[]
+  currentEmail: string | null
 }
 
 export interface RecordObat {
