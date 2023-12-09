@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Button, Spinner, Flex, Box, Text, Heading} from '@chakra-ui/react'; 
+import { Button, Spinner, Flex, Box, Text, Heading } from '@chakra-ui/react'; 
 import { MedicalRecord } from 'src/components/utils/interface';
 import { GetRecordsResponse } from './interface';
 import { api } from 'src/components/utils/api';
-import { RecordCard } from './RecordCard';
 import { Layout } from 'src/components/layouts/layout';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { PatientRecordCard } from 'src/components/elements/Record/PatientRecordCard';
 
 export const DaftarMedicalRecord = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,12 +20,12 @@ export const DaftarMedicalRecord = () => {
     setSort("desc")
   }
 
-  const SorterIcon = () => {
+const SorterIcon = () => {
   if (sort === "asc") return <ChevronDownIcon w={8} h={8} />;
   if (sort === "desc") return <ChevronUpIcon w={8} h={8}/>;
 };
 
-  const SorterButton = () => {
+const SorterButton = () => {
   return (
     <Button
       aria-label="Sort"
@@ -34,20 +34,17 @@ export const DaftarMedicalRecord = () => {
       onClick={() =>changeSort()}
       paddingX={4}
     > 
-    {sort == 'desc' ? 'Terbaru' : 'Terlama'}
+      {sort == 'desc' ? 'Terbaru' : 'Terlama'}
     </Button>
   );
 };
 
 
   useEffect(() => {
-    console.log(sort)
     const getRecords = async () => {
       try {
         const res = await api.get(`/record?sort=${sort}`);
-        console.log(api.defaults.baseURL)
         const data = res.data as GetRecordsResponse;
-        console.log(data)
         setRecords(data.data);
       } catch (err) {
         console.error(err);
@@ -62,7 +59,11 @@ export const DaftarMedicalRecord = () => {
     <Layout>
       <Heading size="xl">Daftar Medical Record</Heading>
       {loading ? (
-      <div className="flex justify-center items-center h-[70vh]">
+      <Flex
+        justifyItems="center"
+        alignItems="center"
+        h="70vh"
+      >
         <Spinner
             thickness="4px"
             speed="0.65s"
@@ -70,7 +71,7 @@ export const DaftarMedicalRecord = () => {
             color="teal"
             size="xl"
         />
-      </div>
+      </Flex>
       ) : (
         <Flex
           flexDirection="column"
@@ -85,23 +86,14 @@ export const DaftarMedicalRecord = () => {
           </Box>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">   
             {records.map((record) => (
-              <RecordCard
-              key={record.id}
-              id={record.id}
-              dokterEmail={record.dokter.name}
-              pasienId={record.pasienId}
-              isVerified={record.isVerified}
-              description={record.description}
-              createdAt={record.createdAt}
-              penyakit={record.penyakit}
-              resepObat={record.recordObat}
-              isPatientCard={true}
+              <PatientRecordCard
+                key={record.id}
+                medicalRecord={record}
               />
             ))}
           </div>
         </Flex>
         )}
-
     </Layout>
   );
 };

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '@contexts'
 import { useLocalStorage } from './useLocalStorage'
 
@@ -12,15 +12,8 @@ export interface User {
 
 export const useUser = () => {
   const { user, setUser } = useContext(AuthContext)
-  const { setItem, getItem } = useLocalStorage()
+  const { setItem} = useLocalStorage()
 
-  useEffect(() => {
-    const user = getItem('user')
-    if (!!user) {
-      setUser(JSON.parse(user))
-    }
-  }, [])
-  
   const addUser = (user: User | undefined) => {
     setUser(user)
     setItem('user', JSON.stringify(user))

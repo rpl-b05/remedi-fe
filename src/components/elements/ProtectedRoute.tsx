@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
-import { useUser } from "../hooks/useUser";
+
+import { useAuth } from "../hooks/useAuth";
 
 interface ProtectedRouteProps {
     doctorPage?: ReactElement,
@@ -7,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({doctorPage, patientPage}: ProtectedRouteProps) => {
-    const {user} = useUser()
+    const {user} = useAuth()
     if (!user) {
         return <div>Login dlu bos</div>
     }
