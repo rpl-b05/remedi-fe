@@ -3,7 +3,7 @@ import { PasienEmailProps, Record } from './interface'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Center, Spinner, Text } from '@chakra-ui/react'
-import { RecordCard } from './RecordCard'
+import { RecordCard } from '../DaftarRecord/RecordCard'
 
 export const ListDaftarRecordPasien: React.FC<PasienEmailProps> = ({
   email,

@@ -3,7 +3,7 @@ import { Button, Spinner, Flex, Box, Text, Heading} from '@chakra-ui/react';
 import { MedicalRecord } from 'src/components/utils/interface';
 import { GetRecordsResponse } from './interface';
 import { api } from 'src/components/utils/api';
-import { RecordCard } from '../DaftarRecordPasien/RecordCard';
+import { RecordCard } from './RecordCard';
 import { Layout } from 'src/components/layouts/layout';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
@@ -14,7 +14,6 @@ export const DaftarMedicalRecord = () => {
 
   const changeSort = () => {
     if(sort == "desc") {
-      console.log("masukkkkkk")
       setSort("asc")
       return
     }
