@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Select,
   useDisclosure,
 } from '@chakra-ui/react'
 import { FormObat } from './FormObat'
@@ -54,7 +55,7 @@ export const DaftarObatSection = () => {
   console.log(obats)
 
   return (
-    <div className="px-20 mt-10">
+    <div className="px-20 mt-10 w-full">
       <div className="text-3xl text-center font-bold">Daftar Obat</div>
       <div className="flex justify-end">
         <Button onClick={onOpen}>Create Obat</Button>
@@ -70,7 +71,10 @@ export const DaftarObatSection = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-
+      <Select placeholder="Filter by" className="w-1/4">
+        <option value="option1">Nama</option>
+        <option value="option2">Kategori</option>
+      </Select>
       <div className="grid grid-cols-4">
         {obats?.map((obat) => (
           <Box
