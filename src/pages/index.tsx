@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useUser } from '@hooks'
 import { LoginInput, RegisterInput } from '@modules'
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
     onOpen: regOnOpen,
     onClose: regOnClose,
   } = useDisclosure()
-
+  const { removeUser } = useUser()
   return (
     <div>
       <Button onClick={onOpen}>Open Modal</Button>
@@ -44,6 +45,7 @@ export default function Home() {
           </ModalBody>
         </ModalContent>
       </Modal>
+      <Button onClick={() => removeUser()}>Log out</Button>
     </div>
   )
 }
