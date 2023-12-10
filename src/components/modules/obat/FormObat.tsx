@@ -66,6 +66,9 @@ export const FormObat = ({ onClose }: { onClose: () => void }) => {
       const response = await axios({
         method: 'GET',
         url: `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat?name=${searchQuery}`,
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        }
       })
 
       const { listKategoriObat }: GetKategoriObat = response?.data
