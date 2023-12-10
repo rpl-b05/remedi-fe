@@ -3,7 +3,7 @@ import { useAuth } from '@hooks'
 import axios from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { GetKategoriObat, KategoriObatOption } from './interface'
+import { GetKategoriObat, KategoriObat } from './interface'
 import { useDebounce } from 'use-debounce'
 
 export const FormObat = ({ onClose }: { onClose: () => void }) => {
@@ -18,7 +18,7 @@ export const FormObat = ({ onClose }: { onClose: () => void }) => {
   const handleSearchQuery = (event: ChangeEvent<HTMLInputElement>) =>
     setSearchQuery(event.target.value)
 
-  const [listKategori, setListKategori] = useState<KategoriObatOption[]>([])
+  const [listKategori, setListKategori] = useState<KategoriObat[]>([])
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
   const [isPickKategori, setIsPickKategori] = useState<boolean>(false)
 
@@ -68,22 +68,18 @@ export const FormObat = ({ onClose }: { onClose: () => void }) => {
         url: `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat?name=${searchQuery}`,
         headers: {
           Authorization: `Bearer ${user?.token}`,
-        }
+        },
       })
 
       const { listKategoriObat }: GetKategoriObat = response?.data
-      const newOptions = listKategoriObat.map((kategori) => ({
-        value: kategori.name,
-        label: kategori.name,
-      }))
-      setListKategori(newOptions)
+      setListKategori(listKategoriObat)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleItemClick = (item: KategoriObatOption) => {
-    setSearchQuery(item.label)
+  const handleKategoriClick = (lategoriObat: KategoriObat) => {
+    setSearchQuery(lategoriObat.name)
     setShowDropdown(false)
     setIsPickKategori(true)
   }
@@ -114,13 +110,13 @@ export const FormObat = ({ onClose }: { onClose: () => void }) => {
             borderRadius="md"
           >
             <VStack align="stretch" p={2}>
-              {listKategori.map((item) => (
+              {listKategori.map((kategori) => (
                 <Box
-                  key={item.value}
+                  key={kategori.id}
                   _hover={{ bg: 'gray.100', cursor: 'pointer' }}
                 >
-                  <Text onClick={() => handleItemClick(item)}>
-                    {item.value}
+                  <Text onClick={() => handleKategoriClick(kategori)}>
+                    {kategori.name}
                   </Text>
                 </Box>
               ))}

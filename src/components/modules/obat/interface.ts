@@ -12,8 +12,3 @@ export interface KategoriObat {
 export interface GetKategoriObat {
   listKategoriObat: KategoriObat[]
 }
-
-export interface KategoriObatOption {
-  value: string
-  label: string
-}
