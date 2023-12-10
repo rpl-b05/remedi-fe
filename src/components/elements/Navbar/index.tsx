@@ -15,7 +15,7 @@ export const Navbar: React.FC = () => {
   const handleCollapse = () => setIsHidden((prev) => !prev)
 
   const handleClick = () => {
-    if (!!user){
+    if (!!user) {
       removeUser()
     }
   }
