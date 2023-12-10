@@ -53,7 +53,7 @@ export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
 
       <RadioGroup onChange={setValue} value={value}>
         <Stack direction="row">
-          <Radio value="DOCTOR">Doktor</Radio>
+          <Radio value="DOCTOR">Dokter</Radio>
           <Radio value="PATIENT">Pasien</Radio>
         </Stack>
       </RadioGroup>
@@ -61,7 +61,7 @@ export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
         <Button
           onClick={() => register({ email, password, name, role }, onClose)}
         >
-          Login
+          Register
         </Button>
       </div>
     </div>

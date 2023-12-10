@@ -6,26 +6,29 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
+  Select as ChakraSelect,
   Spinner,
   Text,
   Textarea,
   VStack,
 } from '@chakra-ui/react'
-import { EditRecordProps, Obat, ObatPair, Penyakit } from './interface'
+import { EditRecordProps, Obat, ObatPair, SelectInterface } from './interface'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { useAuth, useLocalStorage } from '@hooks'
+import Select from 'react-select'
+import { PenyakitModal } from '@elements'
 
 export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
-  const [penyakitId, setPenyakitId] = useState<string>()
+  const [penyakitId, setPenyakitId] = useState<SelectInterface | null>()
   const [loadingPenyakit, setLoadingPenyakit] = useState(true)
-  const [allPenyakit, setAllPenyakit] = useState<Penyakit[]>([])
+  const [allPenyakit, setAllPenyakit] = useState<any>()
   const [deskripsi, setDeskripsi] = useState<string>('')
   const [allObat, setAllObat] = useState<Obat[]>([])
   const [loadingObat, setLoadingObat] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [obatPairs, setObatPairs] = useState<ObatPair[]>([])
   const router = useRouter()
   const { user } = useAuth()
@@ -63,7 +66,10 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
       .then((res) => {
         const tempAllPenyakit = []
         for (const penyakit of res.data.data) {
-          tempAllPenyakit.push(penyakit as Penyakit)
+          tempAllPenyakit.push({
+            value: penyakit.id,
+            label: `${penyakit.name} - ${penyakit.category}`,
+          })
         }
         setAllPenyakit(tempAllPenyakit)
       })
@@ -97,13 +103,14 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
       toast.error('Penyakit tidak boleh kosong')
       return
     }
+    console.log(penyakitId)
     e.preventDefault()
     const headers = {
       'Content-Type': 'application/json',
     }
     const data = JSON.stringify({
       description: deskripsi,
-      penyakitId: Number(penyakitId),
+      penyakitId: Number(penyakitId?.value),
       daftarRecordObat: obatPairs,
     })
 
@@ -193,17 +200,21 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
             <Select
               value={penyakitId}
               onChange={(e) => {
-                setPenyakitId(e.target.value)
+                setPenyakitId(e)
               }}
               placeholder="Pilih penyakit"
-            >
-              {allPenyakit.map((penyakit, index) => (
-                <option value={penyakit.id} key={index}>
-                  {penyakit.name} - {penyakit.category}
-                </option>
-              ))}
-            </Select>
+              options={allPenyakit}
+            />
           </FormControl>
+          <span className="text-[12px]">
+            Tidak menemukan penyakit yang sesuai?{' '}
+            <button
+              className="text-teal-500 underline"
+              onClick={() => setIsOpen(true)}
+            >
+              Tambah obat baru
+            </button>
+          </span>
           <FormControl className="mt-3">
             <FormLabel>Deskripsi</FormLabel>
             <Textarea
@@ -219,7 +230,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
               <FormControl key={index}>
                 <FormLabel>{`Obat ${index + 1}`}</FormLabel>
                 <Flex alignItems="center">
-                  <Select
+                  <ChakraSelect
                     placeholder="Pilih obat"
                     value={pair.obatId}
                     onChange={(e) =>
@@ -231,7 +242,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
                         {obat.name}
                       </option>
                     ))}
-                  </Select>
+                  </ChakraSelect>
                   <Input
                     className="ml-2"
                     value={pair.dosis}
@@ -269,6 +280,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
         </Text>
       </Center>
       {displayForm()}
+      <PenyakitModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </main>
   )
 }
