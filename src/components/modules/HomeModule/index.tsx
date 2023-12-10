@@ -26,7 +26,7 @@ export const HomeModule: React.FC = () => {
         <div className="mt-20 bg-teal-500 text-white h-fit w-full grid grid-cols-2">
           <Image
             src={
-              'https://i.pinimg.com/564x/b9/b8/38/b9b83859bf3fea3be0ebe0b6c5a37e88.jpg'
+              'https://img.freepik.com/free-photo/medical-physician-doctor-man_1150-15053.jpg?w=900&t=st=1702231201~exp=1702231801~hmac=054117851f41973c7b24dcb79c947d7e771c9182c0bdb92bacebc47b72ef159e'
             }
             alt={''}
             width={0}
