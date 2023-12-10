@@ -43,7 +43,7 @@ export const DaftarObatSection = () => {
         toast.error('This page is available for doctor only')
       }
     }
-  }, [user])
+  }, [user, obats])
 
   const fetchAllObat = async () => {
     api
@@ -67,7 +67,7 @@ export const DaftarObatSection = () => {
         .get(`${process.env.NEXT_PUBLIC_API_URL}/obat?name=${search}`)
         .then((res) => setObats(res.data.data))
     }
-  }, [search])
+  }, [search, obats])
 
   return (
     <div className="px-20 mt-10 w-full">
