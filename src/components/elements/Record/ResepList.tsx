@@ -1,10 +1,9 @@
-import { RecordObat } from '../../modules/Record/DaftarRecordPasien/interface';
-import {Text, UnorderedList, ListItem, Box} from '@chakra-ui/react';
+import { RecordObat } from '../../modules/Record/DaftarRecordPasien/interface'
+import { Text, UnorderedList, ListItem, Box } from '@chakra-ui/react'
 
-export const ResepList = ({resep} : {resep: RecordObat[]}) => {
-   return (
-    resep.length > 0 && 
-    (
+export const ResepList = ({ resep }: { resep: RecordObat[] }) => {
+  return (
+    resep.length > 0 && (
       <Box>
         <Text fontSize="small" color="gray">
           Resep:
@@ -21,5 +20,5 @@ export const ResepList = ({resep} : {resep: RecordObat[]}) => {
         </UnorderedList>
       </Box>
     )
-   )
+  )
 }
