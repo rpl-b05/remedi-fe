@@ -5,13 +5,20 @@ import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaFileMedicalAlt } from 'react-icons/fa'
 import { Collapse } from '@chakra-ui/react'
 import { useWindowSize } from 'usehooks-ts'
-import { useAuth } from '@hooks'
+import { useAuth, useUser } from '@hooks'
 
 export const Navbar: React.FC = () => {
   const { width } = useWindowSize()
   const { user } = useAuth()
+  const { removeUser } = useUser()
   const [isHidden, setIsHidden] = useState(true)
   const handleCollapse = () => setIsHidden((prev) => !prev)
+
+  const handleClick = () => {
+    if (!!user){
+      removeUser()
+    }
+  }
 
   return (
     <nav className="shadow-xl bg-white text-teal-500 sticky top-0 flex flex-col py-4 px-8 z-10">
@@ -37,10 +44,11 @@ export const Navbar: React.FC = () => {
 
         <div className="flex justify-center items-center gap-2">
           <button
+            onClick={handleClick}
             type="button"
             className="text-white bg-teal-500 hover:bg-teal-800 font-medium rounded-lg text-sm px-4 py-2 text-center"
           >
-            {!!user ? 'Sign Up' : 'Sign Out'}
+            {!!user ? 'Sign Out' : 'Sign Up'}
           </button>
           <button
             onClick={handleCollapse}
