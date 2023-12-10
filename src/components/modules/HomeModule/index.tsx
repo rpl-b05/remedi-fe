@@ -67,7 +67,6 @@ export const HomeModule: React.FC = () => {
           />
         </div>
       </section>
-
     </section>
   )
 }
