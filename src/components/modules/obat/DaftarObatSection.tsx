@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,17 +13,19 @@ import {
 } from '@chakra-ui/react'
 import { FormObat } from './FormObat'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useAuth, useLocalStorage } from '@hooks'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Obat } from './interface'
+import { api } from 'src/components/utils/api'
 export const DaftarObatSection = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user } = useAuth()
   const router = useRouter()
   const { getItem } = useLocalStorage()
   const [obats, setObats] = useState<Obat[]>()
+  const [filter,setFilter] = useState<string>("")
+  const [search,setSearch] = useState<string>("")
   useEffect(() => {
     const tokenFromStorage = getItem('user')
     if (!tokenFromStorage) {
@@ -44,15 +47,23 @@ export const DaftarObatSection = () => {
   }, [user])
 
   const fetchAllObat = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/obat`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      })
-      .then((res) => setObats(res.data.data))
+    api.get(`${process.env.NEXT_PUBLIC_API_URL}/obat`).then((res) => setObats(res.data.data))    
   }
-  console.log(obats)
+
+  const handleChange = (event:any) => {
+    setFilter(event.target.value)
+  }
+
+  const handleSearch = (event: any) => setSearch(event.target.value)
+
+  useEffect(()=>{
+    if(filter == 'kategori'){
+      console.log("abb")
+      api.get(`${process.env.NEXT_PUBLIC_API_URL}/obat?category=${search}`).then((res) => setObats(res.data.data))    
+    }else{
+      api.get(`${process.env.NEXT_PUBLIC_API_URL}/obat?name=${search}`).then((res) => setObats(res.data.data))    
+    }
+  },[search])
 
   return (
     <div className="px-20 mt-10 w-full">
@@ -71,10 +82,14 @@ export const DaftarObatSection = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Select placeholder="Filter by" className="w-1/4">
-        <option value="option1">Nama</option>
-        <option value="option2">Kategori</option>
+      <div className='mt-5'>
+         <Select placeholder="Filter by"  onChange={handleChange} defaultValue={"nama"}>
+        <option value="nama">Nama</option>
+        <option value="kategori">Kategori</option>
       </Select>
+      </div>
+     
+      <Input type="text" placeholder="Enter search" onKeyUp={handleSearch} />
       <div className="grid grid-cols-4">
         {obats?.map((obat) => (
           <Box
