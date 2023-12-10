@@ -28,7 +28,7 @@ import { useAuth, useLocalStorage } from '@hooks'
 
 export const ListDaftarPasien = () => {
   const [currQuery, setCurrQuery] = useState('')
-  const [emails, setEmails] = useState<[string]>([''])
+  const [emails, setEmails] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [email, setEmail] = useState('')
@@ -145,13 +145,21 @@ export const ListDaftarPasien = () => {
         </div>
       )
     } else {
-      return (
-        <>
-          {emails.map((email) => (
-            <PasienCard key={email} email={email} />
-          ))}
-        </>
-      )
+      if (emails.length == 0) {
+        return (
+          <div className="flex flex-col items-center mt-5">
+            Email tidak ditemukan pada sistem
+          </div>
+        )
+      } else {
+        return (
+          <>
+            {emails.map((email) => (
+              <PasienCard key={email} email={email} />
+            ))}
+          </>
+        )
+      }
     }
   }
 
