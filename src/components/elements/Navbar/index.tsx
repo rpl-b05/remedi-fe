@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { NAV_LINKS } from './constant'
 import Link from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaFileMedicalAlt } from 'react-icons/fa'
 import { Collapse } from '@chakra-ui/react'
 import { useWindowSize } from 'usehooks-ts'
+import { useAuth } from '@hooks'
 
 export const Navbar: React.FC = () => {
-  const [isHidden, setIsHidden] = useState(true)
   const { width } = useWindowSize()
-  const onClick = () => setIsHidden((prev) => !prev)
+  const { user } = useAuth()
+  const [isHidden, setIsHidden] = useState(true)
+  const handleCollapse = () => setIsHidden((prev) => !prev)
 
   return (
-    <nav className="shadow-xl text-teal-500 sticky top-0 flex flex-col py-4 px-8">
+    <nav className="shadow-xl bg-white text-teal-500 sticky top-0 flex flex-col py-4 px-8 z-10">
       <div className="flex items-center justify-between">
-        <div className="flex justify-center items-center gap-2">
+        <Link href={'/'} className="flex justify-center items-center gap-2">
           <FaFileMedicalAlt size={30} />
           <span className="text-2xl font-bold">Remedi</span>
-        </div>
+        </Link>
 
         <div className="lg:flex gap-7 items-center justify-center font-semibold hidden">
           {NAV_LINKS.map((value) => {
@@ -38,10 +40,10 @@ export const Navbar: React.FC = () => {
             type="button"
             className="text-white bg-teal-500 hover:bg-teal-800 font-medium rounded-lg text-sm px-4 py-2 text-center"
           >
-            Sign Up
+            {!!user ? 'Sign Up' : 'Sign Out'}
           </button>
           <button
-            onClick={onClick}
+            onClick={handleCollapse}
             type="button"
             className="rounded-md hover:bg-teal-100 focus:ring-2 focus:ring-teal-200 p-1 lg:hidden"
           >

@@ -38,7 +38,7 @@ export default function Home() {
       <Modal isOpen={regIsOpen} onClose={regOnClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Login</ModalHeader>
+          <ModalHeader>Register</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <RegisterInput onClose={regOnClose} />

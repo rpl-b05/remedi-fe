@@ -18,3 +18,8 @@ export interface ObatPair {
   obatId: number | undefined
   dosis: string | undefined
 }
+
+export interface SelectInterface {
+  value: string
+  label: string
+}
