@@ -57,13 +57,14 @@ export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
           <Radio value="PATIENT">Pasien</Radio>
         </Stack>
       </RadioGroup>
-      <div className="mt-5 flex justify-center mb-4">
-        <Button
-          onClick={() => register({ email, password, name, role }, onClose)}
-        >
-          Register
-        </Button>
-      </div>
+      <Button
+        className="w-full"
+        backgroundColor={'teal'}
+        color={'white'}
+        onClick={() => register({ email, password, name, role }, onClose)}
+      >
+        Register
+      </Button>
     </div>
   )
 }

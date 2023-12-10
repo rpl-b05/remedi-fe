@@ -26,11 +26,13 @@ export const LoginInput = ({ onClose }: { onClose: () => void }) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      <div className="mt-5 flex justify-center mb-4">
-        <Button onClick={() => login({ email, password }, onClose)}>
-          Login
-        </Button>
-      </div>
+      <Button
+        onClick={() => login({ email, password }, onClose)}
+        color={'white'}
+        backgroundColor={'teal'}
+      >
+        Login
+      </Button>
     </div>
   )
 }
