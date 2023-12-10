@@ -8,3 +8,7 @@ export interface KategoriObat {
   id: number
   name: string
 }
+
+export interface GetKategoriObat {
+  listKategoriObat: KategoriObat[]
+}
