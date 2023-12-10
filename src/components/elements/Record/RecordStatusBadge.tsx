@@ -1,5 +1,5 @@
-import {Badge} from '@chakra-ui/react'
-export const RecordStatusBadge = ({isVerified} : {isVerified: boolean}) => {
+import { Badge } from '@chakra-ui/react'
+export const RecordStatusBadge = ({ isVerified }: { isVerified: boolean }) => {
   if (isVerified == null || isVerified == undefined) {
     return <Badge>Belum Diverifikasi</Badge>
   }

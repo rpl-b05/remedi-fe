@@ -12,7 +12,7 @@ export interface User {
 
 export const useUser = () => {
   const { user, setUser } = useContext(AuthContext)
-  const { setItem} = useLocalStorage()
+  const { setItem } = useLocalStorage()
 
   const addUser = (user: User | undefined) => {
     setUser(user)
@@ -23,7 +23,6 @@ export const useUser = () => {
     setUser(undefined)
     setItem('user', '')
   }
-
 
   return { user, addUser, removeUser }
 }

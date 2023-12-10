@@ -31,7 +31,7 @@ export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
   })
 
   const group = getRootProps()
-  const [value, setValue] =useState('')
+  const [value, setValue] = useState('')
   console.log(value)
   return (
     <div className="flex flex-col gap-5">
@@ -52,11 +52,11 @@ export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
       </InputGroup>
 
       <RadioGroup onChange={setValue} value={value}>
-      <Stack direction='row'>
-        <Radio value='DOCTOR'>Doktor</Radio>
-        <Radio value='PATIENT'>Pasien</Radio>
-      </Stack>
-    </RadioGroup>
+        <Stack direction="row">
+          <Radio value="DOCTOR">Doktor</Radio>
+          <Radio value="PATIENT">Pasien</Radio>
+        </Stack>
+      </RadioGroup>
       <div className="mt-5 flex justify-center mb-4">
         <Button
           onClick={() => register({ email, password, name, role }, onClose)}

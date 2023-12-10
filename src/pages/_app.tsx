@@ -6,6 +6,7 @@ import { AuthContext } from '@contexts'
 import { User } from '@hooks'
 import { Toaster } from 'react-hot-toast'
 import { useState } from 'react'
+import { Navbar } from '@elements'
 
 export default function App({ Component, pageProps }: AppProps) {
   // const { user, setUser } = useAuth()
@@ -14,9 +15,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <AuthContext.Provider value={{ user, setUser }}>
         <Toaster />
-        <div className="bg-neutral-20">
+        <Navbar />
+        <main className="bg-neutral-20">
           <Component {...pageProps} />
-        </div>
+        </main>
       </AuthContext.Provider>
     </ChakraProvider>
   )
