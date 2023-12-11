@@ -90,7 +90,9 @@ export const DaftarObatSection = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tambah Obat</ModalHeader>
+          <ModalHeader>
+            {isCreateKategori ? 'Tambah Kategori Obat' : 'Tambah Obat'}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {!isCreateKategori && (
