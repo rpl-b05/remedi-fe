@@ -212,7 +212,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
               className="text-teal-500 underline"
               onClick={() => setIsOpen(true)}
             >
-              Tambah obat baru
+              Tambah penyakit baru
             </button>
           </span>
           <FormControl className="mt-3">
