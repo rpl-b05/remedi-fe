@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { NAV_LINKS } from './constant'
 import Link from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaFileMedicalAlt } from 'react-icons/fa'
 import { Collapse } from '@chakra-ui/react'
 import { useWindowSize } from 'usehooks-ts'
 import { useAuth, useUser } from '@hooks'
+import { useAuthContext } from '@contexts'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 
 export const Navbar: React.FC = () => {
   const { width } = useWindowSize()
   const { user } = useAuth()
+  const router = useRouter()
+  const { setIsAuthModalOpen } = useAuthContext()
   const { removeUser } = useUser()
   const [isHidden, setIsHidden] = useState(true)
   const handleCollapse = () => setIsHidden((prev) => !prev)
@@ -17,6 +21,10 @@ export const Navbar: React.FC = () => {
   const handleClick = () => {
     if (!!user) {
       removeUser()
+      toast.success('Berhasil sign out')
+      router.push('/')
+    } else {
+      setIsAuthModalOpen((prev) => !prev)
     }
   }
 
@@ -29,24 +37,27 @@ export const Navbar: React.FC = () => {
         </Link>
 
         <div className="lg:flex gap-7 items-center justify-center font-semibold hidden">
-          {NAV_LINKS.map((value) => {
-            return (
-              <Link
-                key={value.key}
-                href={value.href}
-                className="lg:hover:text-teal-700"
-              >
-                {value.label}
-              </Link>
-            )
-          })}
+          <Link key={'obat'} href={'/obat'} className="lg:hover:text-teal-700">
+            {'Daftar Obat'}
+          </Link>
+          <Link
+            key={'medical_record'}
+            href={user?.role === 'PATIENT' ? '/record' : '/record/pasien'}
+            className="lg:hover:text-teal-700"
+          >
+            {'Medical Record'}
+          </Link>
         </div>
 
         <div className="flex justify-center items-center gap-2">
           <button
             onClick={handleClick}
             type="button"
-            className="text-white bg-teal-500 hover:bg-teal-800 font-medium rounded-lg text-sm px-4 py-2 text-center"
+            className={`text-white ${
+              !!user
+                ? 'bg-red-500 hover:bg-red-800'
+                : 'bg-teal-500 hover:bg-teal-800'
+            } font-medium rounded-lg text-sm px-4 py-2 text-center`}
           >
             {!!user ? 'Sign Out' : 'Sign Up'}
           </button>
@@ -63,17 +74,20 @@ export const Navbar: React.FC = () => {
       {/* Mobile */}
       <Collapse in={width > 768 ? false : isHidden} className="flex flex-col">
         <div className="flex flex-col gap-1 p-3 mt-4 bg-slate-100 rounded-lg">
-          {NAV_LINKS.map((value) => {
-            return (
-              <Link
-                key={value.key}
-                href={value.href}
-                className="lg:hover:text-teal-700 px-2 py-1 rounded-md hover:bg-gray-200 font-semibold"
-              >
-                {value.label}
-              </Link>
-            )
-          })}
+          <Link
+            key={'obat'}
+            href={'/obat'}
+            className="lg:hover:text-teal-700 px-2 py-1 rounded-md hover:bg-gray-200 font-semibold"
+          >
+            {'Daftar Obat'}
+          </Link>
+          <Link
+            key={'medical_record'}
+            href={user?.role === 'PATIENT' ? '/record' : '/record/pasien'}
+            className="lg:hover:text-teal-700 px-2 py-1 rounded-md hover:bg-gray-200 font-semibold"
+          >
+            {'Medical Record'}
+          </Link>
         </div>
       </Collapse>
     </nav>

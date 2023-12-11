@@ -1,12 +1,49 @@
-import { createContext, Dispatch, SetStateAction } from 'react'
+import React, {
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
+import { AuthModal } from '@elements'
 import { User } from '../hooks/useUser'
 
-interface AuthContext {
-  user: User | undefined
-  setUser: Dispatch<SetStateAction<User | undefined>> // Make sure to import Dispatch and SetStateAction
+export interface AuthContextProviderProps {
+  children: ReactNode
 }
 
-export const AuthContext = createContext<AuthContext>({
-  user: undefined,
-  setUser: () => {},
-})
+export interface AuthContextInterface {
+  setIsAuthModalOpen: React.Dispatch<SetStateAction<boolean>>
+  user: User | undefined
+  setUser: React.Dispatch<SetStateAction<User | undefined>>
+}
+
+const AuthContext = createContext({} as AuthContextInterface)
+
+export const useAuthContext = () => useContext(AuthContext)
+
+export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
+  children,
+}) => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false)
+  const [user, setUser] = useState<User>()
+
+  const contextValue = useMemo(() => {
+    return {
+      setIsAuthModalOpen,
+      user,
+      setUser,
+    }
+  }, [setIsAuthModalOpen, user, setUser])
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
+    </AuthContext.Provider>
+  )
+}
