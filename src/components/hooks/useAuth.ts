@@ -6,15 +6,14 @@ import toast from 'react-hot-toast'
 import { capitalizeString } from '@utils'
 
 export const useAuth = () => {
-  const { user, addUser, removeUser , setUser} = useUser()
+  const { user, addUser, removeUser, setUser } = useUser()
   const { getItem, setItem } = useLocalStorage()
 
   useEffect(() => {
     const userLS = getItem('user')
     if (userLS) {
       addUser(JSON.parse(userLS))
-    }
-    else {
+    } else {
       setUser(null)
     }
   }, [])
