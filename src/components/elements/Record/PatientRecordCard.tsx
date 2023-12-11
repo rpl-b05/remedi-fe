@@ -23,7 +23,6 @@ export const PatientRecordCard = ({
     recordObat,
   } = medicalRecord
   const onVerifyClick = (isVerified: boolean) => {
-    
     try {
       const patchRecord = async () => {
         await api.patch(`/record/${id}`, { isVerified })
