@@ -31,7 +31,7 @@ export const LoginContent = ({ onClose }: { onClose: () => void }) => {
         color={'white'}
         backgroundColor={'teal'}
       >
-        Login
+        Sign In
       </Button>
     </div>
   )
