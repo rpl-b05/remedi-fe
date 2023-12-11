@@ -167,8 +167,13 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
 
   useEffect(() => {
     if (token) {
-      fetchAllPenyakit()
       fetchAllObat()
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (token) {
+      fetchAllPenyakit()
     }
   }, [token, isOpen])
 
@@ -179,8 +184,24 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
     }
   }, [])
 
+  const adjustedFunction: (obj: { inputValue: string }) => React.ReactNode = (
+    obj
+  ) => {
+    return (
+      <span className="text-[14px]">
+        Tidak menemukan penyakit yang sesuai?{' '}
+        <button
+          className="text-teal-500 underline"
+          onClick={() => setIsOpen(true)}
+        >
+          Tambah penyakit baru
+        </button>
+      </span>
+    )
+  }
+
   const displayForm = () => {
-    if (loadingPenyakit || loadingObat) {
+    if (loadingObat) {
       return (
         <div className="flex justify-center items-center h-[70vh]">
           <Spinner
@@ -204,17 +225,9 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
               }}
               placeholder="Pilih penyakit"
               options={allPenyakit}
+              noOptionsMessage={adjustedFunction}
             />
           </FormControl>
-          <span className="text-[12px]">
-            Tidak menemukan penyakit yang sesuai?{' '}
-            <button
-              className="text-teal-500 underline"
-              onClick={() => setIsOpen(true)}
-            >
-              Tambah obat baru
-            </button>
-          </span>
           <FormControl className="mt-3">
             <FormLabel>Deskripsi</FormLabel>
             <Textarea
