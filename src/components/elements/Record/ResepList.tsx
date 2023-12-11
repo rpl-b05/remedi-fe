@@ -1,7 +1,8 @@
+import { ObatRecord } from 'src/components/utils/interface'
 import { RecordObat } from '../../modules/Record/DaftarRecordPasien/interface'
 import { Text, UnorderedList, ListItem, Box } from '@chakra-ui/react'
 
-export const ResepList = ({ resep }: { resep: RecordObat[] }) => {
+export const ResepList = ({ resep }: { resep: ObatRecord[] }) => {
   return (
     resep.length > 0 && (
       <Box>
@@ -12,8 +13,9 @@ export const ResepList = ({ resep }: { resep: RecordObat[] }) => {
           {resep.map((item, index) => (
             <ListItem key={index}>
               <Text fontSize="small" color="gray">
-                Obat {item.obat}
-                {` (${item.kategoriObatName})`}: {item.dosis}
+                Obat <span className="font-bold">{item.obat.name}</span>
+                {` (${item.obat.kategori.name})`}:{' '}
+                <span className="font-bold">{item.dosis}</span>
               </Text>
             </ListItem>
           ))}

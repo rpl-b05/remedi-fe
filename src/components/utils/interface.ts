@@ -12,5 +12,15 @@ export interface MedicalRecord {
   }
   penyakit: string
   createdAt: string
-  recordObat: RecordObat[]
+  recordObat: ObatRecord[]
+  
+}
+export interface Obat {
+  name: string
+  kategori: {name:string}
+}
+
+export interface ObatRecord {
+  dosis: string
+  obat: Obat
 }
