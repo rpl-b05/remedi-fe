@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import { AuthContext } from '@contexts'
+import { useAuthContext } from '@contexts'
 import { useLocalStorage } from './useLocalStorage'
 
 export interface User {
@@ -11,7 +10,7 @@ export interface User {
 }
 
 export const useUser = () => {
-  const { user, setUser } = useContext(AuthContext)
+  const { user, setUser } = useAuthContext()
   const { setItem } = useLocalStorage()
 
   const addUser = (user: User | undefined) => {

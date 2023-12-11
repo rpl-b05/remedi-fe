@@ -11,7 +11,7 @@ import {
 import { useAuth } from '@hooks'
 import { useState } from 'react'
 
-export const RegisterInput = ({ onClose }: { onClose: () => void }) => {
+export const RegisterContent = ({ onClose }: { onClose: () => void }) => {
   const [show, setShow] = useState(false)
   const [email, setEmail] = useState<string>('')
   const [name, setName] = useState<string>('')

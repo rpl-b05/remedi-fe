@@ -2,7 +2,7 @@ import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { useAuth } from '@hooks'
 import { useState } from 'react'
 
-export const LoginInput = ({ onClose }: { onClose: () => void }) => {
+export const LoginContent = ({ onClose }: { onClose: () => void }) => {
   const [show, setShow] = useState(false)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
