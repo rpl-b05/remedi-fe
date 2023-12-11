@@ -6,7 +6,13 @@ import toast from 'react-hot-toast'
 import { GetKategoriObat, KategoriObat } from './interface'
 import { useDebounce } from 'use-debounce'
 
-export const FormObat = ({ onClose }: { onClose: () => void }) => {
+export const FormObat = ({
+  onClose,
+  onSuccess,
+}: {
+  onClose: () => void
+  onSuccess: () => void
+}) => {
   const DEBOUNCE_DELAY = 500
   const { user } = useAuth()
 
@@ -54,6 +60,7 @@ export const FormObat = ({ onClose }: { onClose: () => void }) => {
 
     await newObat
       .then((res) => {
+        onSuccess()
         onClose()
       })
       .catch((err) => {

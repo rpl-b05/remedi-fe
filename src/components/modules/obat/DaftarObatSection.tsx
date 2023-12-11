@@ -37,19 +37,15 @@ export const DaftarObatSection = () => {
   useEffect(() => {
     if (user) {
       if (user.role == 'DOCTOR') {
-        fetchAllObat()
+        if (filter != '' && search != '') {
+          fetch()
+        }
       } else {
         router.push('/')
         toast.error('This page is available for doctor only')
       }
     }
   }, [user, obats])
-
-  const fetchAllObat = async () => {
-    api
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/obat`)
-      .then((res) => setObats(res.data.data))
-  }
 
   const handleChange = (event: any) => {
     setFilter(event.target.value)
@@ -58,16 +54,28 @@ export const DaftarObatSection = () => {
   const handleSearch = (event: any) => setSearch(event.target.value)
 
   useEffect(() => {
+    fetch()
+  }, [search, filter])
+
+  const fetch = () => {
     if (filter == 'kategori') {
       api
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/obat?category=${search}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_API_URL}/obat${
+            search == '' ? '' : `?category=${search}`
+          }`
+        )
         .then((res) => setObats(res.data.data))
     } else {
       api
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/obat?name=${search}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_API_URL}/obat${
+            search == '' ? '' : `?name=${search}`
+          }`
+        )
         .then((res) => setObats(res.data.data))
     }
-  }, [search, obats])
+  }
 
   return (
     <div className="px-20 mt-10 w-full">
@@ -82,7 +90,7 @@ export const DaftarObatSection = () => {
           <ModalHeader>Form Create Obat</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormObat onClose={onClose} />
+            <FormObat onClose={onClose} onSuccess={fetch} />
           </ModalBody>
         </ModalContent>
       </Modal>
