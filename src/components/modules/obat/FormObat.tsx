@@ -1,10 +1,11 @@
 import { Input, Box, Text, VStack, Divider, Button } from '@chakra-ui/react'
 import { useAuth } from '@hooks'
 import axios from 'axios'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { GetKategoriObat, KategoriObat } from './interface'
 import { useDebounce } from 'use-debounce'
+import { MdArrowDropDown } from 'react-icons/md'
 
 export const FormObat = ({
   onClose,
@@ -28,9 +29,20 @@ export const FormObat = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
   const [isPickKategori, setIsPickKategori] = useState<boolean>(false)
 
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setShowDropdown(false)
+    }
+  }
+
   const handleSubmit = async () => {
     if (!isPickKategori) {
-      await axios.post(
+      const newKategori = axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat`,
         { name: debouncedSearch },
         {
@@ -40,6 +52,11 @@ export const FormObat = ({
           },
         }
       )
+      await toast.promise(newKategori, {
+        loading: `Membuat kategori obat...`,
+        success: 'Berhasil membuat kategori obat baru',
+        error: (err) => err.response.data.responseMessage,
+      })
     }
 
     const newObat = axios.post(
@@ -52,9 +69,11 @@ export const FormObat = ({
         },
       }
     )
-    toast.promise(newObat, {
+    await toast.promise(newObat, {
       loading: `Creating obat...`,
-      success: 'Successfully create new obat',
+      success: `Berhasil membuat obat ${
+        !isPickKategori ? 'dan kategori obat ' : ''
+      }baru`,
       error: (err) => err.response.data.responseMessage,
     })
 
@@ -95,18 +114,37 @@ export const FormObat = ({
     getKategoriObat()
   }, [debouncedSearch])
 
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col gap-3 mb-5">
-      <Input type="text" placeholder="Enter Obat name" onKeyUp={handleName} />
+      <div className="flex flex-col gap-1">
+        <span>Nama Obat</span>
+        <Input type="text" placeholder="Nama Obat" onKeyUp={handleName} />
+      </div>
       <Box position="relative">
-        <Input
-          placeholder="Enter Kategori Obat"
-          value={searchQuery}
-          onChange={handleSearchQuery}
-          onClick={() => setShowDropdown(true)}
-        />
+        <div className="flex flex-col gap-1">
+          <span>Nama Kategori Obat</span>
+          <div className="relative">
+            <Input
+              placeholder="Select..."
+              value={searchQuery}
+              onChange={handleSearchQuery}
+              onClick={() => setShowDropdown(true)}
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <MdArrowDropDown className="h-5 w-5 text-gray-400" />
+            </div>
+          </div>
+        </div>
         {showDropdown && (
           <Box
+            ref={dropdownRef}
             position="absolute"
             top="100%"
             left={0}
@@ -115,8 +153,10 @@ export const FormObat = ({
             bg="white"
             border="1px solid #E2E8F0"
             borderRadius="md"
+            maxHeight="170px"
+            overflowY="auto"
           >
-            <VStack align="stretch" p={2}>
+            <VStack align="stretch" p={3}>
               {listKategori.map((kategori) => (
                 <Box
                   key={kategori.id}
@@ -133,7 +173,7 @@ export const FormObat = ({
         )}
       </Box>
       <Button colorScheme="green" onClick={() => handleSubmit()}>
-        Create
+        Tambah
       </Button>
     </div>
   )
