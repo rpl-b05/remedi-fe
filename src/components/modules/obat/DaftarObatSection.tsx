@@ -106,29 +106,36 @@ export const DaftarObatSection = () => {
       </div>
 
       <Input type="text" placeholder="Enter search" onKeyUp={handleSearch} />
-      <div className="grid grid-cols-4">
-        {obats?.map((obat) => (
-          <Box
-            key={obat.id}
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            paddingX={5}
-            paddingY={3}
-            marginTop={3}
-            style={{ cursor: 'pointer' }}
-            _hover={{
-              transform: 'scale(1.01)',
-              transition: 'transform 0.3s ease-in-out',
-            }}
-          >
-            <div className="font-bold text-2xl capitalize text-green-500">
-              {obat.name}
-            </div>
-            <div className=" text-xl capitalize ">{obat.kategori.name}</div>
-          </Box>
+      {obats &&
+        (obats?.length > 0 ? (
+          <div className="grid grid-cols-4">
+            {obats?.map((obat) => (
+              <Box
+                key={obat.id}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                paddingX={5}
+                paddingY={3}
+                marginTop={3}
+                style={{ cursor: 'pointer' }}
+                _hover={{
+                  transform: 'scale(1.01)',
+                  transition: 'transform 0.3s ease-in-out',
+                }}
+              >
+                <div className="font-bold text-2xl capitalize text-green-500">
+                  {obat.name}
+                </div>
+                <div className=" text-xl capitalize ">{obat.kategori.name}</div>
+              </Box>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 text-2xl text-center font-bold text-green-500">
+            Obat yang dicari tidak ada
+          </div>
         ))}
-      </div>
     </div>
   )
 }

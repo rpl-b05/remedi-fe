@@ -41,10 +41,28 @@ export const FormObat = ({
   }
 
   const handleSubmit = async () => {
-    if (!isPickKategori) {
-      const newKategori = axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat`,
-        { name: debouncedSearch },
+    if (name != '' && debouncedSearch != '') {
+      if (!isPickKategori) {
+        const newKategori = axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat`,
+          { name: debouncedSearch },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        )
+        await toast.promise(newKategori, {
+          loading: `Membuat kategori obat...`,
+          success: 'Berhasil membuat kategori obat baru',
+          error: (err) => err.response.data.responseMessage,
+        })
+      }
+
+      const newObat = axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/obat`,
+        { name, category: debouncedSearch },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -52,39 +70,25 @@ export const FormObat = ({
           },
         }
       )
-      await toast.promise(newKategori, {
-        loading: `Membuat kategori obat...`,
-        success: 'Berhasil membuat kategori obat baru',
+      await toast.promise(newObat, {
+        loading: `Creating obat...`,
+        success: `Berhasil membuat obat ${
+          !isPickKategori ? 'dan kategori obat ' : ''
+        }baru`,
         error: (err) => err.response.data.responseMessage,
       })
+
+      await newObat
+        .then((res) => {
+          onSuccess()
+          onClose()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      toast.error('Form tidak valid')
     }
-
-    const newObat = axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/obat`,
-      { name, category: debouncedSearch },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}`,
-        },
-      }
-    )
-    await toast.promise(newObat, {
-      loading: `Creating obat...`,
-      success: `Berhasil membuat obat ${
-        !isPickKategori ? 'dan kategori obat ' : ''
-      }baru`,
-      error: (err) => err.response.data.responseMessage,
-    })
-
-    await newObat
-      .then((res) => {
-        onSuccess()
-        onClose()
-      })
-      .catch((err) => {
-        console.log(err)
-      })
   }
 
   const getKategoriObat = async () => {

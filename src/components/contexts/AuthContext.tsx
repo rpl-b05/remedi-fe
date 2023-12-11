@@ -15,8 +15,8 @@ export interface AuthContextProviderProps {
 
 export interface AuthContextInterface {
   setIsAuthModalOpen: React.Dispatch<SetStateAction<boolean>>
-  user: User | undefined
-  setUser: React.Dispatch<SetStateAction<User | undefined>>
+  user: User | undefined | null
+  setUser: React.Dispatch<SetStateAction<User | undefined | null>>
 }
 
 const AuthContext = createContext({} as AuthContextInterface)
@@ -27,7 +27,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   children,
 }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false)
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>()
 
   const contextValue = useMemo(() => {
     return {
