@@ -45,7 +45,7 @@ export const DaftarObatSection = () => {
         toast.error('This page is available for doctor only')
       }
     }
-  }, [user, obats])
+  }, [user])
 
   const handleChange = (event: any) => {
     setFilter(event.target.value)
