@@ -15,8 +15,8 @@ export const Navbar: React.FC = () => {
   const router = useRouter()
   const { setIsAuthModalOpen } = useAuthContext()
   const { removeUser } = useUser()
-  const [isHidden, setIsHidden] = useState(true)
-  const handleCollapse = () => setIsHidden((prev) => !prev)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const handleCollapse = () => setIsCollapsed((prev) => !prev)
 
   const handleClick = () => {
     if (!!user) {
@@ -72,7 +72,10 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile */}
-      <Collapse in={width > 768 ? false : isHidden} className="flex flex-col">
+      <Collapse
+        in={width > 768 ? false : isCollapsed}
+        className="flex flex-col"
+      >
         <div className="flex flex-col gap-1 p-3 mt-4 bg-slate-100 rounded-lg">
           <Link
             key={'obat'}
