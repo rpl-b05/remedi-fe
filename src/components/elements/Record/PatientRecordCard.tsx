@@ -23,12 +23,16 @@ export const PatientRecordCard = ({
     recordObat,
   } = medicalRecord
   const onVerifyClick = (isVerified: boolean) => {
+    
     try {
-      api.patch(`/record/${id}`, { isVerified })
-      toast.success(
-        `Medical record berhasil di${isVerified ? 'verifikasi' : 'tolak'}`
-      )
-      Router.reload()
+      const patchRecord = async () => {
+        await api.patch(`/record/${id}`, { isVerified })
+        toast.success(
+          `Medical record berhasil di${isVerified ? 'verifikasi' : 'tolak'}`
+        )
+        Router.reload()
+      }
+      patchRecord()
     } catch (err) {
       toast.error(
         `Medical record gagal di${isVerified ? 'verifikasi' : 'tolak'}`
