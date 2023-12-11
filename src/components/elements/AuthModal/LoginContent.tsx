@@ -30,6 +30,7 @@ export const LoginContent = ({ onClose }: { onClose: () => void }) => {
         onClick={() => login({ email, password }, onClose)}
         color={'white'}
         backgroundColor={'teal'}
+        isDisabled={email === '' || password === ''}
       >
         Sign In
       </Button>

@@ -13,11 +13,10 @@ export interface MedicalRecord {
   penyakit: string
   createdAt: string
   recordObat: ObatRecord[]
-  
 }
 export interface Obat {
   name: string
-  kategori: {name:string}
+  kategori: { name: string }
 }
 
 export interface ObatRecord {

@@ -62,6 +62,7 @@ export const RegisterContent = ({ onClose }: { onClose: () => void }) => {
         backgroundColor={'teal'}
         color={'white'}
         onClick={() => register({ email, password, name, role }, onClose)}
+        isDisabled={email === '' || password === '' || name === ''}
       >
         Sign Up
       </Button>
