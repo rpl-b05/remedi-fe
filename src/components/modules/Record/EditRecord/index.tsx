@@ -121,8 +121,8 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
       { headers }
     )
     toast.promise(postData, {
-      loading: `Updating medical record ${id}...`,
-      success: 'Successfully updated new medical record',
+      loading: `Mengupdate medical record ${id}...`,
+      success: 'Sukses mengupdate medical record',
       error: (err) => err.response.data.responseMessage,
     })
 

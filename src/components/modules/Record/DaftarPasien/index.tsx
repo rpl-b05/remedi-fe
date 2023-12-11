@@ -41,7 +41,7 @@ export const ListDaftarPasien = () => {
   const handleFormSubmit = async (e: any) => {
     e.preventDefault()
     if (email == '') {
-      toast.error('Email cannot be empty')
+      toast.error('Email tidak bisa kosong')
     } else {
       const headers = {
         'Content-Type': 'application/json',
@@ -60,9 +60,9 @@ export const ListDaftarPasien = () => {
       )
 
       toast.promise(postData, {
-        loading: 'Creating new medical record...',
+        loading: 'Membuat medical record baru...',
         success: (data) => {
-          return `Successfully created new medical record with ID ${data.data.record.id}`
+          return `Sukses membuat medical record dengan ID ${data.data.record.id}`
         },
         error: (err) => err.response.data.responseMessage,
       })
@@ -209,9 +209,9 @@ export const ListDaftarPasien = () => {
 
           <ModalFooter>
             <Button colorScheme="teal" mr={3} onClick={handleFormSubmit}>
-              Create
+              Buat
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>Batal</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
