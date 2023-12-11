@@ -45,7 +45,7 @@ export const DaftarObatSection = () => {
         toast.error('This page is available for doctor only')
       }
     }
-  }, [user, obats])
+  }, [user])
 
   const handleChange = (event: any) => {
     setFilter(event.target.value)
@@ -81,13 +81,13 @@ export const DaftarObatSection = () => {
     <div className="px-20 mt-10 w-full">
       <div className="text-3xl text-center font-bold">Daftar Obat</div>
       <div className="flex justify-end">
-        <Button onClick={onOpen}>Create Obat</Button>
+        <Button onClick={onOpen}>Tambah Obat</Button>
       </div>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Form Create Obat</ModalHeader>
+          <ModalHeader>Tambah Obat</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormObat onClose={onClose} onSuccess={fetch} />
