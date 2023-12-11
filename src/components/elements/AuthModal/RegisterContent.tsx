@@ -63,7 +63,7 @@ export const RegisterContent = ({ onClose }: { onClose: () => void }) => {
         color={'white'}
         onClick={() => register({ email, password, name, role }, onClose)}
       >
-        Register
+        Sign Up
       </Button>
     </div>
   )
