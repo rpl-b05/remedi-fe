@@ -72,7 +72,10 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile */}
-      <Collapse in={width > 768 ? false : isCollapsed} className="flex flex-col">
+      <Collapse
+        in={width > 768 ? false : isCollapsed}
+        className="flex flex-col"
+      >
         <div className="flex flex-col gap-1 p-3 mt-4 bg-slate-100 rounded-lg">
           <Link
             key={'obat'}

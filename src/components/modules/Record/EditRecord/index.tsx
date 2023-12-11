@@ -170,7 +170,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
       fetchAllPenyakit()
       fetchAllObat()
     }
-  }, [token])
+  }, [token, isOpen])
 
   useEffect(() => {
     const tokenFromStorage = getItem('user')
