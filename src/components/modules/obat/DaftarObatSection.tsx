@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Obat } from './interface'
 import { api } from 'src/components/utils/api'
+import { FormKategoriObat } from './FormKategoriObat'
 export const DaftarObatSection = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user } = useAuth()
@@ -26,6 +27,8 @@ export const DaftarObatSection = () => {
   const [obats, setObats] = useState<Obat[]>()
   const [filter, setFilter] = useState<string>('')
   const [search, setSearch] = useState<string>('')
+  const [isCreateKategori, setIsCreateKategori] = useState<boolean>(false)
+  const handleClick = () => setIsCreateKategori((prev) => !prev)
   useEffect(() => {
     const tokenFromStorage = getItem('user')
     if (!tokenFromStorage) {
@@ -90,7 +93,26 @@ export const DaftarObatSection = () => {
           <ModalHeader>Tambah Obat</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormObat onClose={onClose} onSuccess={fetch} />
+            {!isCreateKategori && (
+              <FormObat onClose={onClose} onSuccess={fetch} />
+            )}
+            {isCreateKategori && (
+              <FormKategoriObat
+                onClose={onClose}
+                setIsCreateKategori={setIsCreateKategori}
+              />
+            )}
+            <span className="text-center text-sm">
+              {!isCreateKategori
+                ? 'Tidak menemukan Kategori Obat?'
+                : 'Kembali ke menambahkan Obat'}{' '}
+              <button
+                className="underline text-teal-500 font-semibold"
+                onClick={handleClick}
+              >
+                {!isCreateKategori ? 'Tambah Kategori Obat' : 'Kembali'}
+              </button>
+            </span>
           </ModalBody>
         </ModalContent>
       </Modal>

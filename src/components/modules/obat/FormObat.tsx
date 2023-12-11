@@ -41,25 +41,11 @@ export const FormObat = ({
   }
 
   const handleSubmit = async () => {
-    if (name != '' && debouncedSearch != '') {
-      if (!isPickKategori) {
-        const newKategori = axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/kategori-obat`,
-          { name: debouncedSearch },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        )
-        await toast.promise(newKategori, {
-          loading: `Membuat kategori obat...`,
-          success: 'Berhasil membuat kategori obat baru',
-          error: (err) => err.response.data.responseMessage,
-        })
-      }
-
+    if (
+      name != '' &&
+      debouncedSearch != '' &&
+      listKategori.some((kategori) => kategori.name.includes(debouncedSearch))
+    ) {
       const newObat = axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/obat`,
         { name, category: debouncedSearch },
@@ -72,9 +58,7 @@ export const FormObat = ({
       )
       await toast.promise(newObat, {
         loading: `Creating obat...`,
-        success: `Berhasil membuat obat ${
-          !isPickKategori ? 'dan kategori obat ' : ''
-        }baru`,
+        success: `Berhasil membuat obat baru`,
         error: (err) => err.response.data.responseMessage,
       })
 
@@ -87,7 +71,11 @@ export const FormObat = ({
           console.log(err)
         })
     } else {
-      toast.error('Form tidak valid')
+      if (!isPickKategori) {
+        toast.error('Kategori Obat tidak ada')
+      } else {
+        toast.error('Form tidak valid')
+      }
     }
   }
 
@@ -102,6 +90,10 @@ export const FormObat = ({
       })
 
       const { listKategoriObat }: GetKategoriObat = response?.data
+
+      if (listKategoriObat.length === 0) {
+        toast.error(`Kategori obat tidak ditemukan`)
+      }
       setListKategori(listKategoriObat)
     } catch (error) {
       console.log(error)
