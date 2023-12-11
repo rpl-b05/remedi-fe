@@ -23,5 +23,5 @@ export const useUser = () => {
     setItem('user', '')
   }
 
-  return { user, addUser, removeUser }
+  return { user, addUser, removeUser , setUser}
 }
