@@ -12,7 +12,7 @@ export interface MedicalRecord {
   }
   penyakit: string
   createdAt: string
-  recordObat: RecordObat[]
+  recordObat: ObatRecord[]
   
 }
 export interface Obat {
