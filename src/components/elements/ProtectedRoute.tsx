@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react'
 
 import { useAuth } from '../hooks/useAuth'
 
-import {redirect} from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 interface ProtectedRouteProps {
@@ -18,12 +18,11 @@ export const ProtectedRoute = ({
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   useEffect(() => {
-    if(user != undefined){
+    if (user != undefined) {
       setIsLoading(false)
     }
-  },[user])
-  if (! isLoading)
-  {
+  }, [user])
+  if (!isLoading) {
     if (!user) {
       router.push('/')
       return
@@ -31,6 +30,6 @@ export const ProtectedRoute = ({
     if (user.role == 'DOCTOR') {
       return doctorPage
     }
-    return patientPage  
+    return patientPage
   }
 }

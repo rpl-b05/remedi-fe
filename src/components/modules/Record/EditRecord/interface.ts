@@ -11,7 +11,12 @@ export interface Penyakit {
 export interface Obat {
   id: number | undefined
   name: string | undefined
-  kategoriObatId: number | undefined
+  kategori: KategoriObat | undefined
+}
+
+export interface KategoriObat {
+  id: number | undefined
+  name: string | undefined
 }
 
 export interface ObatPair {

@@ -239,7 +239,7 @@ export const EditMedicalRecord: React.FC<EditRecordProps> = ({ id }) => {
                   >
                     {allObat.map((obat) => (
                       <option key={obat.id} value={obat.id}>
-                        {obat.name}
+                        {obat.name} - {obat.kategori?.name}
                       </option>
                     ))}
                   </ChakraSelect>
